@@ -7,7 +7,9 @@ if(process.argv.length < 2){
 
   console.log(month[input].name);
   console.log(month[input].days);
-}else{
+}
+//if no arguments are passed
+else{
   var today = new Date();
   var d = today.getDate() + '';
   var m = today.getMonth() + 1 + '';
