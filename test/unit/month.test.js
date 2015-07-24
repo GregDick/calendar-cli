@@ -1,5 +1,5 @@
 var should = require('chai').should();
-var Month = require((process.cwd()+ '/lib/month'))
+var month = require(process.cwd()+ '/lib/month')
 
 describe('month', function(){
   describe('object', function(){
