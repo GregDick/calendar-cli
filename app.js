@@ -4,12 +4,13 @@ var month = require(process.cwd() + '/lib/month');
 var align = require(process.cwd() + '/lib/align');
 var reformat = require(process.cwd() + '/lib/reformat');
 var zeller = require(process.cwd() + '/lib/zeller');
+var header = require(process.cwd() + '/lib/header');
 
 if(process.argv.length > 2){
   var m = process.argv[2];
   var y = process.argv[3];
 
-  console.log(month[m].name);
+  console.log(header(month[m].name, y));
   var roughDate = {
     day: '1',
     month: m,
