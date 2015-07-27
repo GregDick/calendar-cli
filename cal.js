@@ -4,6 +4,7 @@ var month = require(process.cwd() + '/lib/month');
 var align = require(process.cwd() + '/lib/align');
 var reformat = require(process.cwd() + '/lib/reformat');
 var zeller = require(process.cwd() + '/lib/zeller');
+var leapCheck = require(process.cwd() + '/lib/leapCheck');
 
 //if only a year is passed
 if(process.argv.length===3){
@@ -23,7 +24,7 @@ else{
   var m = today.getMonth() + 1 + '';
   var y = today.getFullYear() + '';
 
-  console.log(output(d, m, y, month[m].days, month[m].name));
+  console.log(output(1, m, y, month[m].days, month[m].name));
 }
 
 //accepts the day month year, number of days in the month, and name of the month
@@ -36,6 +37,8 @@ function output(d, m, y, days, name){
   }
   var formatted = reformat(roughDate);
   var weekday = zeller(formatted);
-  return align(weekday, days, name, y);
+  var checkedDays = leapCheck(y, days, name);
+
+  return align(weekday, checkedDays, name, y);
 }
 
