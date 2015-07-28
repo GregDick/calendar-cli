@@ -1,28 +1,37 @@
 #!/usr/bin/env node
+var Readable = require('stream').Readable;
+var http = require('http');
+var https = require('https');
+// var month = require(process.cwd() + '/lib/month');
+// var align = require(process.cwd() + '/lib/align');
+// var reformat = require(process.cwd() + '/lib/reformat');
+// var zeller = require(process.cwd() + '/lib/zeller');
+// var leapCheck = require(process.cwd() + '/lib/leapCheck');
 
-var month = require(process.cwd() + '/lib/month');
-var align = require(process.cwd() + '/lib/align');
-var reformat = require(process.cwd() + '/lib/reformat');
-var zeller = require(process.cwd() + '/lib/zeller');
-var leapCheck = require(process.cwd() + '/lib/leapCheck');
+var month = require('/Users/Greg/Documents/NSS/code/calendar-cli/lib/month');
+var align = require('/Users/Greg/Documents/NSS/code/calendar-cli/lib/align');
+var reformat = require('/Users/Greg/Documents/NSS/code/calendar-cli/lib/reformat');
+var zeller = require('/Users/Greg/Documents/NSS/code/calendar-cli/lib/zeller');
+var leapCheck = require('/Users/Greg/Documents/NSS/code/calendar-cli/lib/leapCheck');
+
+var readable = new Readable;
 
 //if only a year is passed
 if(process.argv.length===3){
   var y = process.argv[2];
 
-  console.log('                             ' + y+'\n');
-  console.log(season(y, 1));
-  console.log(season(y, 4));
-  console.log(season(y, 7));
-  console.log(season(y, 10));
-
+  readable.push('                             ' + y+'\n');
+  readable.push(season(y, 1)+'\n');
+  readable.push(season(y, 4)+'\n');
+  readable.push(season(y, 7)+'\n');
+  readable.push(season(y, 10)+ '\n');
 }
 //if a month and year are passed
 else if(process.argv.length > 3){
   var m = process.argv[2];
   var y = process.argv[3];
 
-  console.log(output(1, m, y, month[m].days, month[m].name, false));
+  readable.push(output(1, m, y, month[m].days, month[m].name, false));
 }
 //if no arguments are passed
 else{
@@ -31,8 +40,12 @@ else{
   var m = today.getMonth() + 1 + '';
   var y = today.getFullYear() + '';
 
-  console.log(output(1, m, y, month[m].days, month[m].name, false));
+  readable.push(output(1, m, y, month[m].days, month[m].name, false));
 }
+
+readable.push(null);
+
+readable.pipe(process.stdout);
 
 //accepts the day month year, number of days in the month, and name of the month
 //compiles all of this information to a calendar format
